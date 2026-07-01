@@ -1,5 +1,26 @@
 # Developer Evaluation Project
 
+## Challenge Considerations (For Reviewer)
+
+This solution implements the **Sales** domain as a complete CRUD API, built as a vertical slice on top of the provided template and following its existing patterns. Full endpoint documentation is in [Sales API](/.doc/sales-api.md).
+
+**What was implemented**
+- **Sales CRUD + cancellation**: create, get, list, update, delete, cancel sale, cancel item (`/api/sales`).
+- **Business rules (in the domain)**: 4–9 items → 10% discount, 10–20 → 20%, below 4 → none, above 20 → rejected.
+- **DDD & External Identities**: `Sale`/`SaleItem` aggregate with denormalized customer, branch and product data.
+- **Design patterns**: CQRS with Mediator (MediatR), Repository, Specification, AutoMapper, FluentValidation.
+- **Persistence**: EF Core + PostgreSQL, dedicated mappings and migrations.
+- **Domain events** (nice-to-have): `SaleCreated`, `SaleModified`, `SaleCancelled`, `ItemCancelled` published via MediatR and written to the application log.
+- **API concerns**: pagination/ordering (`_page`/`_size`/`_order`), standardized `type`/`error`/`detail` error handling, consistent response envelope.
+- **Tests**: unit (domain + handlers), integration (repository) and functional (full HTTP) — the last two use Testcontainers, so they require Docker.
+- **Process**: Git Flow (`feature/sales-domain`) with semantic commits, one commit per layer.
+
+**How to run**
+- `docker compose up` (PostgreSQL) → `dotnet ef database update` → `dotnet run` in `Ambev.DeveloperEvaluation.WebApi` → open `/swagger`.
+- Tests: `dotnet test` (integration/functional need Docker running).
+
+---
+
 `READ CAREFULLY`
 
 ## Use Case
@@ -61,10 +82,13 @@ This section outlines the frameworks and libraries that are leveraged in the pro
 
 See [Frameworks](/.doc/frameworks.md)
 
-<!-- 
 ## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
+This section includes links to the detailed documentation for the implemented API resource:
+- [Sales API](/.doc/sales-api.md)
+
+<!-- 
+The following resources are part of the broader DeveloperStore API definition:
+- [API General](/.doc/general-api.md)
 - [Products API](/.doc/products-api.md)
 - [Carts API](/.doc/carts-api.md)
 - [Users API](/.doc/users-api.md)
