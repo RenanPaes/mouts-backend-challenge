@@ -11,6 +11,7 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.ListSales;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.UpdateSale;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +44,7 @@ public class SalesController : BaseController
         var validator = new CreateSaleRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<CreateSaleCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);
@@ -95,7 +96,7 @@ public class SalesController : BaseController
         var validator = new UpdateSaleRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
+            throw new ValidationException(validationResult.Errors);
 
         var command = _mapper.Map<UpdateSaleCommand>(request);
         command.Id = id;
