@@ -38,6 +38,16 @@ public interface ISaleRepository
     IQueryable<Sale> Query();
 
     /// <summary>
+    /// Retrieves a paginated, ordered page of sales.
+    /// </summary>
+    /// <param name="page">1-based page number.</param>
+    /// <param name="size">Page size.</param>
+    /// <param name="order">Optional ordering expression (e.g. "saleDate desc, saleNumber asc").</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The page of sales together with the total item count.</returns>
+    Task<(List<Sale> Items, int TotalCount)> ListAsync(int page, int size, string? order, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Updates an existing sale.
     /// </summary>
     /// <param name="sale">The sale to update.</param>
