@@ -1,5 +1,6 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
@@ -50,6 +51,25 @@ public class SaleRepository : ISaleRepository
         return _context.Sales
             .Include(s => s.Items)
             .AsQueryable();
+    }
+
+    /// <inheritdoc />
+    public async Task<(List<Sale> Items, int TotalCount)> ListAsync(int page, int size, string? order, CancellationToken cancellationToken = default)
+    {
+        if (page < 1) page = 1;
+        if (size < 1) size = 10;
+
+        var query = Query();
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .ApplyOrdering(order, nameof(Sale.CreatedAt))
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
+
+        return (items, totalCount);
     }
 
     /// <inheritdoc />
