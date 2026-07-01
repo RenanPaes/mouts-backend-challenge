@@ -80,8 +80,16 @@ public class SalesController : BaseController
         var result = await _mediator.Send(command, cancellationToken);
 
         var items = _mapper.Map<List<SaleResponse>>(result.Items);
-        var paged = new PaginatedList<SaleResponse>(items, result.TotalItems, result.CurrentPage, request.Size);
-        return OkPaginated(paged);
+        var response = new PaginatedResponse<SaleResponse>
+        {
+            Data = items,
+            CurrentPage = result.CurrentPage,
+            TotalPages = result.TotalPages,
+            TotalCount = result.TotalItems,
+            Success = true,
+            Message = "Sales retrieved successfully"
+        };
+        return new OkObjectResult(response);
     }
 
     /// <summary>
