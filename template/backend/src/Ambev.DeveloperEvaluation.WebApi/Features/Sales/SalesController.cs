@@ -65,7 +65,7 @@ public class SalesController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetSale([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetSaleCommand(id), cancellationToken);
+        var result = await _mediator.Send(new GetSaleQuery(id), cancellationToken);
         return Ok(_mapper.Map<SaleResponse>(result));
     }
 
@@ -76,7 +76,7 @@ public class SalesController : BaseController
     [ProducesResponseType(typeof(PaginatedResponse<SaleResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListSales([FromQuery] ListSalesRequest request, CancellationToken cancellationToken)
     {
-        var command = _mapper.Map<ListSalesCommand>(request);
+        var command = _mapper.Map<ListSalesQuery>(request);
         var result = await _mediator.Send(command, cancellationToken);
 
         var items = _mapper.Map<List<SaleResponse>>(result.Items);

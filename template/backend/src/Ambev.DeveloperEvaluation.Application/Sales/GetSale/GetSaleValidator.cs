@@ -3,9 +3,9 @@ using FluentValidation;
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 
 /// <summary>
-/// Validator for <see cref="GetSaleCommand"/>.
+/// Validator for <see cref="GetSaleQuery"/>.
 /// </summary>
-public class GetSaleValidator : AbstractValidator<GetSaleCommand>
+public class GetSaleValidator : AbstractValidator<GetSaleQuery>
 {
     public GetSaleValidator()
     {

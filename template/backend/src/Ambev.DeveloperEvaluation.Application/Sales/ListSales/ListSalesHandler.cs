@@ -6,9 +6,9 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Sales.ListSales;
 
 /// <summary>
-/// Handler for <see cref="ListSalesCommand"/>.
+/// Handler for <see cref="ListSalesQuery"/>.
 /// </summary>
-public class ListSalesHandler : IRequestHandler<ListSalesCommand, ListSalesResult>
+public class ListSalesHandler : IRequestHandler<ListSalesQuery, ListSalesResult>
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ public class ListSalesHandler : IRequestHandler<ListSalesCommand, ListSalesResul
         _mapper = mapper;
     }
 
-    public async Task<ListSalesResult> Handle(ListSalesCommand request, CancellationToken cancellationToken)
+    public async Task<ListSalesResult> Handle(ListSalesQuery request, CancellationToken cancellationToken)
     {
         var page = request.Page < 1 ? 1 : request.Page;
         var size = request.Size < 1 ? 10 : request.Size;

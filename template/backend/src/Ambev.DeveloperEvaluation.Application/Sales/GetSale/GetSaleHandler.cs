@@ -7,9 +7,9 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 
 /// <summary>
-/// Handler for <see cref="GetSaleCommand"/>.
+/// Handler for <see cref="GetSaleQuery"/>.
 /// </summary>
-public class GetSaleHandler : IRequestHandler<GetSaleCommand, SaleResult>
+public class GetSaleHandler : IRequestHandler<GetSaleQuery, SaleResult>
 {
     private readonly ISaleRepository _saleRepository;
     private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ public class GetSaleHandler : IRequestHandler<GetSaleCommand, SaleResult>
         _mapper = mapper;
     }
 
-    public async Task<SaleResult> Handle(GetSaleCommand request, CancellationToken cancellationToken)
+    public async Task<SaleResult> Handle(GetSaleQuery request, CancellationToken cancellationToken)
     {
         var validator = new GetSaleValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);

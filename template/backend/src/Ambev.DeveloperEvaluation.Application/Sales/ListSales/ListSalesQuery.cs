@@ -3,9 +3,9 @@ using MediatR;
 namespace Ambev.DeveloperEvaluation.Application.Sales.ListSales;
 
 /// <summary>
-/// Command for retrieving a paginated, ordered list of sales.
+/// Query for retrieving a paginated, ordered list of sales.
 /// </summary>
-public class ListSalesCommand : IRequest<ListSalesResult>
+public class ListSalesQuery : IRequest<ListSalesResult>
 {
     /// <summary>1-based page number (default: 1).</summary>
     public int Page { get; set; } = 1;

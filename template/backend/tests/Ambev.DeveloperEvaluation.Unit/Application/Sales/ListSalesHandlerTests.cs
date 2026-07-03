@@ -41,7 +41,7 @@ public class ListSalesHandlerTests
             .Returns((sales, 25));
 
         // When
-        var result = await _handler.Handle(new ListSalesCommand { Page = 1, Size = 10 }, CancellationToken.None);
+        var result = await _handler.Handle(new ListSalesQuery { Page = 1, Size = 10 }, CancellationToken.None);
 
         // Then
         result.Items.Should().HaveCount(2);
@@ -58,7 +58,7 @@ public class ListSalesHandlerTests
             .Returns((new List<Sale>(), 0));
 
         // When
-        var result = await _handler.Handle(new ListSalesCommand { Page = 0, Size = 0 }, CancellationToken.None);
+        var result = await _handler.Handle(new ListSalesQuery { Page = 0, Size = 0 }, CancellationToken.None);
 
         // Then
         result.CurrentPage.Should().Be(1);

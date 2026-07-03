@@ -35,7 +35,7 @@ public class GetSaleHandlerTests
         _saleRepository.GetByIdAsync(sale.Id, Arg.Any<CancellationToken>()).Returns(sale);
 
         // When
-        var result = await _handler.Handle(new GetSaleCommand(sale.Id), CancellationToken.None);
+        var result = await _handler.Handle(new GetSaleQuery(sale.Id), CancellationToken.None);
 
         // Then
         result.Id.Should().Be(sale.Id);
@@ -48,7 +48,7 @@ public class GetSaleHandlerTests
         _saleRepository.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>()).Returns((Sale?)null);
 
         // When
-        var act = () => _handler.Handle(new GetSaleCommand(Guid.NewGuid()), CancellationToken.None);
+        var act = () => _handler.Handle(new GetSaleQuery(Guid.NewGuid()), CancellationToken.None);
 
         // Then
         await act.Should().ThrowAsync<KeyNotFoundException>();
@@ -57,7 +57,7 @@ public class GetSaleHandlerTests
     [Fact(DisplayName = "Given empty id When getting Then throws validation exception")]
     public async Task Handle_EmptyId_ThrowsValidation()
     {
-        var act = () => _handler.Handle(new GetSaleCommand(Guid.Empty), CancellationToken.None);
+        var act = () => _handler.Handle(new GetSaleQuery(Guid.Empty), CancellationToken.None);
         await act.Should().ThrowAsync<FluentValidation.ValidationException>();
     }
 }
